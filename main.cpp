@@ -1,65 +1,125 @@
 #include <iostream>
-#include <cstdlib>
-#include <ctime>
+#include <conio.h>
+#include <windows.h>
 using namespace std;
-// code that doesn't use object oriented programming (no classes)
 
-const int width = 20, height = 20;
 int x, y, fruitX, fruitY, score;
 bool gameOver;
-enum eDirection { STOP = 0, LEFT, RIGHT, UP, DOWN };
-eDirection dir;
+enum eDir { STOP = 0, LEFT, RIGHT, UP, DOWN };
 
-void Setup()
-{
+eDir dir;
+
+void setup(){
     gameOver = false;
     dir = STOP;
-    x = width/2; y = height/2; // to center the snake
-    fruitX = rand() % width;
-    fruitY = rand() % height;
     score = 0;
 }
-void Draw()
-{
+
+void frame(int a, int b){
    system("cls");
-   for (int i = 0; i <= width; i++)
+   cout << "Score: " << score;
+   cout << endl;
+
+   for (int i = 0; i <= a + 1; i++)
        cout << "#";
    cout << endl;
 
-   for (int i = 0; i < height; i++)
-   {
-       for (int j = 0; j < width; j++)
-       {
+   for (int i = 0; i < b; i++){
+       for (int j = 0; j < a; j++){
            if (j == 0)
                cout << "#";
            if (i == y && j == x)
                cout << "0";
+           else if (i == fruitY && j == fruitX)
+               cout << "X";
+           else
                cout << " ";
-           if (j == width-1)
+           if (j == a-1)
                cout << "#";
        }
        cout << endl;
    }
 
-   for (int i = 0; i <= width; i++)
+   for (int i = 0; i <= a + 1; i++)
        cout << "#";
    cout<<endl;
 }
-void Input()
-{
 
+void inputControls(){
+    if (_kbhit()){
+        switch (_getch()){
+            case 'a':
+                dir = LEFT;
+                break;
+            case 'd':
+                dir = RIGHT;
+                break;
+            case 'w':
+                dir = UP;
+                break;
+            case 's':
+                dir = DOWN;
+                break;
+            case 'x':
+                gameOver = true;
+                break;
+        }
+    }
 }
-void Logic()
-{
 
+void inputLogic(int a, int b){
+    switch (dir){
+        case LEFT:
+            x--;
+            break;
+        case RIGHT:
+            x++;
+            break;
+        case UP:
+            y--;
+            break;
+        case DOWN:
+            y++;
+            break;
+        default:
+            break;
+    }
+    if (x > a || x < 0 || y > b || y < 0)
+        gameOver = true;
+    if (x == fruitX && y == fruitY) {
+        score++;
+        fruitX = rand() % a;
+        fruitY = rand() % b;
+    }
 }
-int main()
-{
-    srand(time(0));
-    Setup();
+
+int main(){
+    int width, height;
+    cout << "Alegeti nivelul de dificultate: 1(usor) 2(mediu) 3(greu)" << endl;
+    switch(_getch()){
+        case '1':
+            width = 30; height = 20;
+            break;
+        case '2':
+            width = 15; height = 10;
+            break;
+        case '3':
+            width = 10; height = 8;
+            break;
+        default:
+            cout << "Valoare invalida, se reda nivelul usor. ";
+            width = 30; height = 20;
+            break;
+    }
+    cout << "Asteptati..";
+    Sleep(2000);
+    setup();
+    x = width/2; y = height/2;
+    fruitX = rand() % width;
+    fruitY = rand() % height;
     while (!gameOver)
     {
-        Draw(); Input(); Logic();
-
+        frame(width ,height); inputControls(); inputLogic(width,height);
+        Sleep(100);
     }
 }
