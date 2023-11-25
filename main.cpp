@@ -33,7 +33,7 @@ void frame(int a, int b){
                 cout << "0";
             else if (i == fruitY && j == fruitX)
                 cout << "X";
-            {
+            else{
                 bool print = false;
                 for (int k = 0; k < nTail; k++)
                 {
