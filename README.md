@@ -1,4 +1,4 @@
-# **C++ Programming: Snake Game Development in C++**<br />
+# **PROJECT: Snake Game Development**<br />
 ## **Objective**<br />
 Create an engaging Snake Game using C++ programming language, combining classic gameplay with modern features.<br />
 ## **Tasks**<br />
